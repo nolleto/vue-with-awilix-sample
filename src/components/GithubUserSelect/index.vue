@@ -4,8 +4,9 @@
       label="login"
       :filterable="false"
       :options="options"
-      v-model="selected"
+      :value="value"
       @search="onSearch"
+      @input="handleInput"
     >
       <template v-slot:option="option">
         <div class="option-item">
@@ -18,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import vSelect from 'vue-select'
 import debounce from 'debounce'
 import { GithubServiceUser } from '@/services/github/GithubService'
@@ -35,7 +36,7 @@ import 'vue-select/dist/vue-select.css'
   }
 })
 export default class GithubUserSelect extends Vue {
-  selected: GithubServiceUser | null = null
+  @Prop(Object) readonly value!: GithubServiceUser
 
   options!: GithubServiceUser[]
   searchUsersByTerm!: (term: string) => Promise<void>
@@ -53,6 +54,10 @@ export default class GithubUserSelect extends Vue {
         setLoading(false)
       }
     }
+  }
+
+  handleInput(valueSelected: GithubServiceUser | null): void {
+    this.$emit('input', { ...valueSelected })
   }
 }
 </script>
