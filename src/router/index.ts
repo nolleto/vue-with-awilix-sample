@@ -28,11 +28,10 @@ const router = new VueRouter({
 })
 
 const openExternalLink = (linkUrl: string): void => {
-  const newWindowsTab = window.open()
+  const openUrl = window.open(linkUrl, '_blank')
 
-  if (newWindowsTab) {
-    newWindowsTab.opener = null
-    newWindowsTab.location = linkUrl
+  if (openUrl) {
+    openUrl.opener = null
   }
 }
 
