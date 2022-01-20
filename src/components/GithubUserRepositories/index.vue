@@ -1,14 +1,13 @@
 <template>
   <div>
-    GithubUserRepositories
-    <p v-if="isLoading">Loading {{user.login}} repositories...</p>
-    <template v-else>
+    <h2>{{title}}</h2>
+    <div v-if="!isLoading" class="gh-repositories__list-container">
       <GithubUserRepository
         v-for="repository in repositories"
         :key="repository.id"
         :repository="repository"
       />
-    </template>
+    </div>
   </div>
 </template>
 
@@ -37,8 +36,39 @@ export default class GithubUserRepositories extends Vue {
     this.loadUserRepositories()
   }
 
+  get title(): string {
+    const repositoriesCount = this.repositories.length
+    const { login: userName } = this.user
+
+    if (this.isLoading) {
+      return `Loading ${userName} repositories...`
+    }
+
+    return `${userName} has ${repositoriesCount} repositories`
+  }
+
   async loadUserRepositories(): Promise<void> {
     await this.getUserRepositories(this.user)
   }
 }
 </script>
+
+<style scoped>
+.gh-repositories__list-container {
+  display: grid;
+  grid-template: '1fr';
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .gh-repositories__list-container {
+    grid-template: '1fr 1fr';
+  }
+}
+
+@media (min-width: 992px) {
+  .gh-repositories__list-container {
+    grid-template: '1fr 1fr 1fr';
+  }
+}
+</style>

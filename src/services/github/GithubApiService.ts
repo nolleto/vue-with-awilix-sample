@@ -23,7 +23,8 @@ class GithubApiService implements GithubService {
 
   async getUserRepositories(username: string): GithubServiceGetUserRepositoriesResult {
     const { data: repositories } = await this.octokit.request('GET /users/{username}/repos', {
-      username
+      username,
+      sort: 'updated'
     })
 
     return repositories.map(repo => ({
@@ -32,7 +33,8 @@ class GithubApiService implements GithubService {
       name: repo.name,
       openIssuesCount: repo.open_issues_count ?? 0,
       url: repo.html_url,
-      description: repo.description
+      description: repo.description,
+      starCount: repo.stargazers_count || 0
     }))
   }
 }

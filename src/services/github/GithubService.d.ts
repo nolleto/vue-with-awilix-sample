@@ -11,6 +11,7 @@ type GithubServiceRepository = {
   name: string
   openIssuesCount: number
   url: string
+  starCount: number
 }
 
 type GithubServiceSearchUserResult = Promise<GithubServiceUser[]>

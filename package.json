@@ -17,6 +17,7 @@
     "core-js": "^3.6.5",
     "debounce": "^1.2.1",
     "vue": "^2.6.11",
+    "vue-awesome": "^4.5.0",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0",

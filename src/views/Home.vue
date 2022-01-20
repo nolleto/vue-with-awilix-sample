@@ -1,14 +1,20 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <GithubUserSelect v-model="userSelected"/>
+    <div class="home__title">
+      <img class="home__title-image" alt="Vue logo" src="../assets/logo.png">
+      <h1>ue with Awilix Sample App</h1>
+    </div>
+
+    <label class="home__select">
+      <h3>Select a github user:</h3>
+      <GithubUserSelect v-model="userSelected"/>
+    </label>
 
     <GithubUserRepositories
       v-if="showRepositories"
       :user="userSelected"
       :key="userSelected.id"
     />
-    <p v-else>Select a user</p>
   </div>
 </template>
 
@@ -32,3 +38,26 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.home {
+  flex-direction: column;
+}
+
+.home,
+.home__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home__title-image {
+  width: 40px;
+  height: 40px;
+}
+
+.home__select {
+  width: 100%;
+  max-width: 300px;
+}
+</style>

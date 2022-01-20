@@ -33,7 +33,8 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "./jest-setup.ts"
+    "./jest-setup.ts",
+    "src/vue-awesome.d.ts"
   ],
   "exclude": [
     "node_modules"

@@ -4,9 +4,15 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <router-view class="app-content"/>
   </div>
 </template>
+
+<style scoped>
+.app-content {
+  margin: 0 16px;
+}
+</style>
 
 <style>
 #app {

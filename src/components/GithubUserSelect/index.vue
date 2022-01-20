@@ -2,6 +2,7 @@
   <div>
     <v-select
       label="login"
+      placeholder="Type a github user..."
       :filterable="false"
       :options="options"
       :value="value"

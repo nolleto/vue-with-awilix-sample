@@ -1,6 +1,7 @@
-import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
+
 import Home from '../views/Home.vue'
+import Vue from 'vue'
 
 Vue.use(VueRouter)
 
@@ -26,4 +27,14 @@ const router = new VueRouter({
   routes
 })
 
+const openExternalLink = (linkUrl: string): void => {
+  const newWindowsTab = window.open()
+
+  if (newWindowsTab) {
+    newWindowsTab.opener = null
+    newWindowsTab.location = linkUrl
+  }
+}
+
+export { openExternalLink }
 export default router
