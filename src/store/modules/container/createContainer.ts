@@ -1,6 +1,7 @@
 import { AwilixContainer, asClass, createContainer } from 'awilix'
 
 import GithubApiService from '@/services/github/GithubApiService'
+import GithubMockService from '@/services/github/GithubMockService'
 import { GithubService } from '@/services/github/GithubService'
 
 type ContainerDependencies = {
@@ -12,10 +13,11 @@ type Props = {
 }
 
 const createDIContainer = (props: Props): ContainerType => {
+  const { isPreviewMode } = props
   const container = createContainer<ContainerDependencies>()
 
   container.register({
-    githubService: asClass(GithubApiService)
+    githubService: asClass(isPreviewMode ? GithubMockService : GithubApiService)
   })
 
   return container
