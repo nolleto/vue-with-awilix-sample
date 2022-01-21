@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <AppConfigs />
     <div class="home__title">
       <img class="home__title-image" alt="Vue logo" src="../assets/logo.png">
       <h1>ue with Awilix Sample App</h1>
@@ -22,12 +23,14 @@
 import { Component, Vue } from 'vue-property-decorator'
 import GithubUserSelect from '@/components/GithubUserSelect/index.vue'
 import GithubUserRepositories from '@/components/GithubUserRepositories/index.vue'
+import AppConfigs from '@/components/AppConfigs/index.vue'
 import { GithubServiceUser } from '@/services/github/GithubService'
 
 @Component({
   components: {
     GithubUserSelect,
-    GithubUserRepositories
+    GithubUserRepositories,
+    AppConfigs
   }
 })
 export default class Home extends Vue {

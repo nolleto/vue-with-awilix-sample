@@ -2,7 +2,6 @@ import { Action, Module, Mutation, VuexModule } from '@/store/modules/vuex-modul
 
 import { GithubServiceUser } from '@/services/github/GithubService'
 import { RefTypes } from 'vuex-composition-helpers/dist/types/util'
-import container from '@/container'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
 @Module({
@@ -12,14 +11,14 @@ class GithubUsers extends VuexModule {
   users: GithubServiceUser[] = []
 
   @Mutation
-  setUsers (newUsers: GithubServiceUser[]): void {
+  setUsers(newUsers: GithubServiceUser[]): void {
     this.users = newUsers
   }
 
   @Action
-  async search (term: string): Promise<void> {
-    const { commit } = this.context
-    const githubService = container.resolve('githubService')
+  async search(term: string): Promise<void> {
+    const { commit, rootState } = this.context
+    const { githubService } = rootState.container.current
     const users = await githubService.searchUser(term)
 
     commit('setUsers', users)

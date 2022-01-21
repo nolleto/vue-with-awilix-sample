@@ -2,7 +2,6 @@ import { Action, Module, Mutation, VuexModule } from '@/store/modules/vuex-modul
 import { GithubServiceRepository, GithubServiceUser } from '@/services/github/GithubService'
 
 import { RefTypes } from 'vuex-composition-helpers/dist/types/util'
-import container from '@/container'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
@@ -36,8 +35,8 @@ class GithubRepositories extends VuexModule {
 
   @Action
   async getUserRepositories(user: GithubServiceUser): Promise<void> {
-    const { commit } = this.context
-    const githubService = container.resolve('githubService')
+    const { commit, rootState } = this.context
+    const { githubService } = rootState.container.current
 
     try {
       commit('setPending')
