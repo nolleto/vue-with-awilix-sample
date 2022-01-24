@@ -1,11 +1,11 @@
 import { AwilixContainer, asClass, createContainer } from 'awilix'
 
-import GithubApiService from '@/services/github/GithubApiService'
-import GithubMockService from '@/services/github/GithubMockService'
-import { GithubService } from '@/services/github/GithubService'
+import GithubApiService from '@/services/sourceCode/github/GithubApiService'
+import SourceCodeMockService from '@/services/sourceCode/SourceCodeMockService'
+import { SourceCodeService } from '@/services/sourceCode/SourceCodeService'
 
 type ContainerDependencies = {
-  githubService: GithubService
+  sourceCodeService: SourceCodeService
 }
 type ContainerType = AwilixContainer<ContainerDependencies>
 type Props = {
@@ -17,7 +17,7 @@ const createDIContainer = (props: Props): ContainerType => {
   const container = createContainer<ContainerDependencies>()
 
   container.register({
-    githubService: asClass(isPreviewMode ? GithubMockService : GithubApiService)
+    sourceCodeService: asClass(isPreviewMode ? SourceCodeMockService : GithubApiService)
   })
 
   return container

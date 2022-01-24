@@ -1,9 +1,9 @@
 import configs from './configs'
 import { module as container } from './container'
-import github from './github'
+import sourceCode from './sourceCode'
 
 export default {
-  github,
+  sourceCode,
   configs,
   container
 }

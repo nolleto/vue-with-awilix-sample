@@ -1,15 +1,15 @@
 <template>
-  <div class="gh-repository-container">
+  <div class="user-repository-container">
     <div>
-      <h3 class="gh-repository-header__title">{{title}}</h3>
-      <div class="gh-repository-header__icons">
-        <icon name="star" title="Github stars">{{starCount}}</icon>
-        <icon name="tasks" title="Github issues">{{openIssuesCount}}</icon>
-        <icon name="code-branch" title="Github forks">{{forksCount}}</icon>
+      <h3 class="user-repository-header__title">{{title}}</h3>
+      <div class="user-repository-header__icons">
+        <icon name="star" :title="starsIconTitle">{{starCount}}</icon>
+        <icon name="tasks" :title="issuesIconTitle">{{openIssuesCount}}</icon>
+        <icon name="code-branch" :title="forksIconTitle">{{forksCount}}</icon>
       </div>
     </div>
 
-    <div class="gh-repository-content">
+    <div class="user-repository-content">
       {{description}}
     </div>
 
@@ -21,19 +21,27 @@
 
 <script setup lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { GithubServiceRepository } from '@/services/github/GithubService'
+import { SourceCodeServiceRepository } from '@/services/sourceCode/SourceCodeService'
 import Icon from '@/components/Icon/index.vue'
 import Button from '@/components/Button/index.vue'
 import { openExternalLink } from '@/router'
+import { useSourceCodeInfo } from '@/store/modules/sourceCode/info/module'
 
 @Component({
   components: {
     Icon,
     Button
+  },
+  setup() {
+    const { name: serviceName } = useSourceCodeInfo()
+
+    return { serviceName }
   }
 })
-export default class GithubUserRepository extends Vue {
-  @Prop(Object) readonly repository!: GithubServiceRepository
+export default class UserRepository extends Vue {
+  @Prop(Object) readonly repository!: SourceCodeServiceRepository
+
+  serviceName!: string
 
   get title(): string {
     return this.repository.name
@@ -55,6 +63,18 @@ export default class GithubUserRepository extends Vue {
     return this.repository.openIssuesCount
   }
 
+  get starsIconTitle() {
+    return `${this.serviceName} stars`
+  }
+
+  get issuesIconTitle() {
+    return `${this.serviceName} issues`
+  }
+
+  get forksIconTitle() {
+    return `${this.serviceName} forks`
+  }
+
   handleOpenRepository(): void {
     openExternalLink(this.repository.url)
   }
@@ -62,7 +82,7 @@ export default class GithubUserRepository extends Vue {
 </script>
 
 <style scoped>
-.gh-repository-container {
+.user-repository-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -72,18 +92,18 @@ export default class GithubUserRepository extends Vue {
   padding: 12px;
 }
 
-.gh-repository-header__title {
+.user-repository-header__title {
   margin: 0;
 }
 
-.gh-repository-header__icons {
+.user-repository-header__icons {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
 }
 
-.gh-repository-content {
+.user-repository-content {
   display: flex;
   align-items: center;
   justify-content: center;

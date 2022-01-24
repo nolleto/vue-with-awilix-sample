@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <label>
+    <h3>{{label}}</h3>
+
     <v-select
       label="login"
-      placeholder="Type a github user..."
+      :placeholder="placeholder"
       :filterable="false"
       :options="options"
       :value="value"
@@ -16,31 +18,42 @@
         </div>
       </template>
     </v-select>
-  </div>
+  </label>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import vSelect from 'vue-select'
 import debounce from 'debounce'
-import { GithubServiceUser } from '@/services/github/GithubService'
-import { useGithubUsers } from '@/store/modules/github/users'
+import { SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
+import { useSourceCodeUsers } from '@/store/modules/sourceCode/users'
+import { useSourceCodeInfo } from '@/store/modules/sourceCode/info/module'
 
 import 'vue-select/dist/vue-select.css'
 
 @Component({
   components: { vSelect },
   setup () {
-    const { searchUsersByTerm, users: options } = useGithubUsers()
+    const { searchUsersByTerm, users: options } = useSourceCodeUsers()
+    const { name: serviceName } = useSourceCodeInfo()
 
-    return { searchUsersByTerm, options }
+    return { searchUsersByTerm, options, serviceName }
   }
 })
-export default class GithubUserSelect extends Vue {
-  @Prop(Object) readonly value!: GithubServiceUser
+export default class UserSelect extends Vue {
+  @Prop(Object) readonly value!: SourceCodeServiceUser
 
-  options!: GithubServiceUser[]
+  serviceName!: string
+  options!: SourceCodeServiceUser[]
   searchUsersByTerm!: (term: string) => Promise<void>
+
+  get label(): string {
+    return `Select a ${this.serviceName} user:`
+  }
+
+  get placeholder(): string {
+    return `Type a ${this.serviceName} user...`
+  }
 
   onSearch = debounce(this.search, 350)
 
@@ -57,7 +70,7 @@ export default class GithubUserSelect extends Vue {
     }
   }
 
-  handleInput(valueSelected: GithubServiceUser | null): void {
+  handleInput(valueSelected: SourceCodeServiceUser | null): void {
     this.$emit('input', { ...valueSelected })
   }
 }

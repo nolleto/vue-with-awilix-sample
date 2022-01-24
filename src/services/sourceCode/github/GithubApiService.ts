@@ -1,15 +1,17 @@
-import { GithubService, GithubServiceGetUserRepositoriesResult, GithubServiceSearchUserResult } from './GithubService'
+import { SourceCodeService, SourceCodeServiceGetUserRepositoriesResult, SourceCodeServiceSearchUserResult } from '../SourceCodeService'
 
 import { Octokit } from '@octokit/core'
 
-class GithubApiService implements GithubService {
+class GithubApiService implements SourceCodeService {
   private octokit: Octokit;
 
   constructor() {
     this.octokit = new Octokit()
   }
 
-  async searchUser(term: string): GithubServiceSearchUserResult {
+  name = 'Github'
+
+  async searchUser(term: string): SourceCodeServiceSearchUserResult {
     const { data: { items: users } } = await this.octokit.request('GET /search/users', {
       q: term
     })
@@ -21,7 +23,7 @@ class GithubApiService implements GithubService {
     }))
   }
 
-  async getUserRepositories(username: string): GithubServiceGetUserRepositoriesResult {
+  async getUserRepositories(username: string): SourceCodeServiceGetUserRepositoriesResult {
     const { data: repositories } = await this.octokit.request('GET /users/{username}/repos', {
       username,
       sort: 'updated'

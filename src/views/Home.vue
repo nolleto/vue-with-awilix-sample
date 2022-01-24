@@ -6,12 +6,9 @@
       <h1>ue with Awilix Sample App</h1>
     </div>
 
-    <label class="home__select">
-      <h3>Select a github user:</h3>
-      <GithubUserSelect v-model="userSelected"/>
-    </label>
+    <UserSelect class="home__select" v-model="userSelected"/>
 
-    <GithubUserRepositories
+    <UserRepositories
       v-if="showRepositories"
       :user="userSelected"
       :key="userSelected.id"
@@ -21,20 +18,20 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import GithubUserSelect from '@/components/GithubUserSelect/index.vue'
-import GithubUserRepositories from '@/components/GithubUserRepositories/index.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
+import UserRepositories from '@/components/UserRepositories/index.vue'
 import AppConfigs from '@/components/AppConfigs/index.vue'
-import { GithubServiceUser } from '@/services/github/GithubService'
+import { SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
 
 @Component({
   components: {
-    GithubUserSelect,
-    GithubUserRepositories,
+    UserSelect,
+    UserRepositories,
     AppConfigs
   }
 })
 export default class Home extends Vue {
-  userSelected: GithubServiceUser | null = null
+  userSelected: SourceCodeServiceUser | null = null
 
   get showRepositories(): boolean {
     return Boolean(this.userSelected?.id)

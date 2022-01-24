@@ -1,8 +1,8 @@
 import {
-  GithubService,
-  GithubServiceGetUserRepositoriesResult,
-  GithubServiceSearchUserResult
-} from './GithubService'
+  SourceCodeService,
+  SourceCodeServiceGetUserRepositoriesResult,
+  SourceCodeServiceSearchUserResult
+} from './SourceCodeService'
 
 import faker from 'faker'
 
@@ -12,9 +12,11 @@ const sleep = (time: number) => new Promise(resolve => {
   setTimeout(resolve, time)
 })
 
-class GithubMockService implements GithubService {
+class SourceCodeMockService implements SourceCodeService {
+  name = 'Mock'
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async searchUser(term: string): GithubServiceSearchUserResult {
+  async searchUser(term: string): SourceCodeServiceSearchUserResult {
     await sleep(1000)
 
     return createArrayWithLength(10).map((_, index) => ({
@@ -25,7 +27,7 @@ class GithubMockService implements GithubService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getUserRepositories(username: string): GithubServiceGetUserRepositoriesResult {
+  async getUserRepositories(username: string): SourceCodeServiceGetUserRepositoriesResult {
     await sleep(2000)
 
     return createArrayWithLength(10).map((_, index) => {
@@ -44,4 +46,4 @@ class GithubMockService implements GithubService {
   }
 }
 
-export default GithubMockService
+export default SourceCodeMockService

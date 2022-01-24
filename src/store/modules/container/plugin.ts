@@ -6,7 +6,7 @@ const plugin = (store: StoreType): void => {
   }
 
   // Initial setup
-  setTimeout(updateContainer, 1)
+  updateContainer()
 
   store.subscribe((mutation): void => {
     if (mutation.type === 'configs/setConfigs') {
