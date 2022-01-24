@@ -1,6 +1,6 @@
 import { StoreType } from '@/store/Store'
 
-const plugin = (store: StoreType): void => {
+const containerPlugin = (store: StoreType): void => {
   const updateContainer = (): void => {
     store.dispatch('container/updateContainer')
   }
@@ -15,4 +15,4 @@ const plugin = (store: StoreType): void => {
   })
 }
 
-export default plugin
+export default containerPlugin

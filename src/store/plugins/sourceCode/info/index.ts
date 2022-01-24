@@ -1,6 +1,6 @@
 import { StoreType } from '@/store/Store'
 
-const plugin = (store: StoreType): void => {
+const sourceCodeInfoPlugin = (store: StoreType): void => {
   store.subscribe((mutation): void => {
     if (mutation.type === 'container/setContainer') {
       store.dispatch('sourceCode/info/updateSourceCodeService')
@@ -8,4 +8,4 @@ const plugin = (store: StoreType): void => {
   })
 }
 
-export default plugin
+export default sourceCodeInfoPlugin

@@ -1,5 +1,5 @@
 import configs from './configs'
-import { module as container } from './container'
+import container from './container'
 import sourceCode from './sourceCode'
 
 export default {

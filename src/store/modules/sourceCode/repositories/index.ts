@@ -1,9 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from '@/store/modules/vuex-module-decorators'
 import { SourceCodeServiceRepository, SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
 
-import { RefTypes } from 'vuex-composition-helpers/dist/types/util'
-import { createNamespacedHelpers } from 'vuex-composition-helpers'
-
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
 @Module({
@@ -50,23 +47,5 @@ class SourceCodeRepositories extends VuexModule {
   }
 }
 
-type SourceCodeRepositoriesState = Pick<SourceCodeRepositories, 'repositories' | 'status'>
-type SourceCodeRepositoriesGetters = Pick<SourceCodeRepositories, 'isLoading'>
-type SourceCodeRepositoriesActions = Pick<SourceCodeRepositories, 'getUserRepositories'>
-
-type useSourceCodeRepositoriesReturn = {
-  repositories: RefTypes<SourceCodeRepositoriesState>['repositories']
-  isLoading: RefTypes<SourceCodeRepositoriesGetters>['isLoading']
-  getUserRepositories: SourceCodeRepositoriesActions['getUserRepositories']
-}
-
-export const useSourceCodeRepositories = (): useSourceCodeRepositoriesReturn => {
-  const { useState, useGetters, useActions } = createNamespacedHelpers('sourceCode/repositories')
-  const { getUserRepositories } = useActions(['getUserRepositories']) as SourceCodeRepositoriesActions
-  const { repositories } = useState(['repositories']) as RefTypes<SourceCodeRepositoriesState>
-  const { isLoading } = useGetters(['isLoading']) as RefTypes<SourceCodeRepositoriesGetters>
-
-  return { getUserRepositories, repositories, isLoading }
-}
-
+export * from './composition'
 export default SourceCodeRepositories

@@ -27,7 +27,7 @@ import vSelect from 'vue-select'
 import debounce from 'debounce'
 import { SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
 import { useSourceCodeUsers } from '@/store/modules/sourceCode/users'
-import { useSourceCodeInfo } from '@/store/modules/sourceCode/info/module'
+import { useSourceCodeInfo } from '@/store/modules/sourceCode/info'
 
 import 'vue-select/dist/vue-select.css'
 

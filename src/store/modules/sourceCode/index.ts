@@ -1,4 +1,4 @@
-import { module as info } from './info'
+import info from './info'
 import repositories from './repositories'
 import users from './users'
 

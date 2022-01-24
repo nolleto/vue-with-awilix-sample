@@ -25,7 +25,7 @@ import { SourceCodeServiceRepository } from '@/services/sourceCode/SourceCodeSer
 import Icon from '@/components/Icon/index.vue'
 import Button from '@/components/Button/index.vue'
 import { openExternalLink } from '@/router'
-import { useSourceCodeInfo } from '@/store/modules/sourceCode/info/module'
+import { useSourceCodeInfo } from '@/store/modules/sourceCode/info'
 
 @Component({
   components: {
