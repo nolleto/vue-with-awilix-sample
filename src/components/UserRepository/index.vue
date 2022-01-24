@@ -63,15 +63,15 @@ export default class UserRepository extends Vue {
     return this.repository.openIssuesCount
   }
 
-  get starsIconTitle() {
+  get starsIconTitle(): string {
     return `${this.serviceName} stars`
   }
 
-  get issuesIconTitle() {
+  get issuesIconTitle(): string {
     return `${this.serviceName} issues`
   }
 
-  get forksIconTitle() {
+  get forksIconTitle(): string {
     return `${this.serviceName} forks`
   }
 
