@@ -31,12 +31,12 @@ class GithubApiService implements SourceCodeService {
 
     return repositories.map(repo => ({
       id: repo.id,
-      forksCount: repo.forks_count ?? 0,
       name: repo.name,
-      openIssuesCount: repo.open_issues_count ?? 0,
-      url: repo.html_url,
       description: repo.description,
-      starCount: repo.stargazers_count || 0
+      url: repo.html_url,
+      forksCount: repo.forks_count ?? 0,
+      openIssuesCount: repo.open_issues_count ?? 0,
+      starCount: repo.stargazers_count ?? 0
     }))
   }
 }
