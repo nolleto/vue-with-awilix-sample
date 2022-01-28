@@ -1,11 +1,9 @@
 <template>
-  <div>
-    Preview Mode
-    <toggle-switch
-      :value="isPreviewMode"
-      @input="handlePreviewModeChange"
-    />
-  </div>
+  <ToggleSwitch
+    label="Preview Mode"
+    :value="isPreviewMode"
+    @input="handlePreviewModeChange"
+  />
 </template>
 
 <script lang="ts">

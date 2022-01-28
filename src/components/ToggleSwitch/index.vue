@@ -1,11 +1,14 @@
 <template>
-  <label class="switch">
-    <input
-      type="checkbox"
-      :checked="value"
-      @change="handleChange($event.target.checked)"
-    />
-    <span class="slider round"></span>
+  <label class="switch-container">
+    {{label}}
+    <div class="switch">
+      <input
+        type="checkbox"
+        :checked="value"
+        @change="handleChange($event.target.checked)"
+      />
+      <span class="slider round"></span>
+    </div>
   </label>
 </template>
 
@@ -15,6 +18,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 @Component
 export default class ToggleSwitch extends Vue {
   @Prop(Boolean) readonly value!: boolean
+  @Prop(String) readonly label?: string
 
   handleChange(checked: boolean): void {
     this.$emit('input', checked)
@@ -23,6 +27,10 @@ export default class ToggleSwitch extends Vue {
 </script>
 
 <style scoped>
+.switch-container{
+  cursor: pointer;
+}
+
 .switch {
   position: relative;
   display: inline-block;

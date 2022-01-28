@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/user-event": "^14.0.0-beta",
     "@testing-library/vue": "^5.8.2",
     "@types/jest": "^24.0.19",
     "@types/lodash.clonedeep": "^4.5.6",
