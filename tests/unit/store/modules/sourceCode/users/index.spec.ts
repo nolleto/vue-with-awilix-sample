@@ -28,7 +28,7 @@ describe('SourceCodeUsers', () => {
       await sleep(10)
 
       if (!success) {
-        throw new Error()
+        throw new Error('Error message')
       }
 
       return users
@@ -43,6 +43,18 @@ describe('SourceCodeUsers', () => {
     describe('.search', () => {
       beforeAll(() => {
         mockSearchUser()
+      })
+
+      it('updates to loading state', async () => {
+        const store = createStore()
+
+        store.dispatch('sourceCodeUsers/search', 'term')
+
+        expect(store.state.sourceCodeUsers).toEqual({
+          users: [],
+          status: 'loading',
+          errorMessage: null
+        })
       })
 
       it('calls sourceCodeService.searchUser', () => {
@@ -64,7 +76,27 @@ describe('SourceCodeUsers', () => {
           await store.dispatch('sourceCodeUsers/search', 'term')
 
           expect(store.state.sourceCodeUsers).toEqual({
-            users: ['user-1', 'user-2', 'user-3']
+            users: ['user-1', 'user-2', 'user-3'],
+            status: 'success',
+            errorMessage: null
+          })
+        })
+      })
+
+      describe('When throw a error', () => {
+        beforeEach(() => {
+          mockSearchUser({ success: false })
+        })
+
+        it('updates to success state', async () => {
+          const store = createStore()
+
+          await store.dispatch('sourceCodeUsers/search', 'term')
+
+          expect(store.state.sourceCodeUsers).toEqual({
+            users: [],
+            status: 'error',
+            errorMessage: 'Error message'
           })
         })
       })

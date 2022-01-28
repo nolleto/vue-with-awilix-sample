@@ -8,6 +8,7 @@
       :filterable="false"
       :options="options"
       :value="value"
+      :loading="isLoading"
       @search="onSearch"
       @input="handleInput"
     >
@@ -18,6 +19,7 @@
         </div>
       </template>
     </v-select>
+    <p class="option-item__error" v-if="hasError">{{errorMessage}}</p>
   </label>
 </template>
 
@@ -26,7 +28,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import vSelect from 'vue-select'
 import debounce from 'debounce'
 import { SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
-import { useSourceCodeUsers } from '@/store/modules/sourceCode/users'
+import { useSourceCodeUsers, useSourceCodeUsersReturn } from '@/store/modules/sourceCode/users'
 import { useSourceCodeInfo } from '@/store/modules/sourceCode/info'
 
 import 'vue-select/dist/vue-select.css'
@@ -34,18 +36,34 @@ import 'vue-select/dist/vue-select.css'
 @Component({
   components: { vSelect },
   setup () {
-    const { searchUsersByTerm, users: options } = useSourceCodeUsers()
+    const {
+      searchUsersByTerm,
+      users: options,
+      errorMessage,
+      hasError,
+      isLoading
+    } = useSourceCodeUsers()
     const { name: serviceName } = useSourceCodeInfo()
 
-    return { searchUsersByTerm, options, serviceName }
+    return {
+      searchUsersByTerm,
+      options,
+      serviceName,
+      errorMessage,
+      hasError,
+      isLoading
+    }
   }
 })
 export default class UserSelect extends Vue {
   @Prop(Object) readonly value!: SourceCodeServiceUser
 
   serviceName!: string
-  options!: SourceCodeServiceUser[]
-  searchUsersByTerm!: (term: string) => Promise<void>
+  options!: useSourceCodeUsersReturn['users']
+  searchUsersByTerm!: useSourceCodeUsersReturn['searchUsersByTerm']
+  hasError!: useSourceCodeUsersReturn['hasError']
+  isLoading!: useSourceCodeUsersReturn['isLoading']
+  errorMessage!: useSourceCodeUsersReturn['errorMessage']
 
   get label(): string {
     return `Select a ${this.serviceName} user:`
@@ -57,16 +75,9 @@ export default class UserSelect extends Vue {
 
   onSearch = debounce(this.search, 350)
 
-  async search (search: string, setLoading: (isLoading: boolean) => void): Promise<void> {
+  async search(search: string): Promise<void> {
     if (search.trim()) {
-      setLoading(true)
-      try {
-        await this.searchUsersByTerm(search)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
-      }
+      this.searchUsersByTerm(search)
     }
   }
 
@@ -87,5 +98,9 @@ export default class UserSelect extends Vue {
 .option-item__image {
   width: 30px;
   height: 30px;
+}
+
+.option-item__error {
+  color: #E74C3C;
 }
 </style>

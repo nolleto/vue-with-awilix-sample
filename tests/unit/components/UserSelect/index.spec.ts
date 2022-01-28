@@ -14,11 +14,20 @@ jest.mock('debounce', () => (fn: Function) => (...args: unknown[]) => {
 
 const mockUseSourceCodeUsers = ({
   searchUsersByTerm = jest.fn(),
-  users = [] as any[]
+  users = [] as any[],
+  errorMessage = null as string | null,
+  hasError = false,
+  isLoading = false
 } = {}) => {
   const mockedUseSourceCodeUsers = useSourceCodeUsers as jest.Mock
 
-  mockedUseSourceCodeUsers.mockReturnValue({ searchUsersByTerm, users })
+  mockedUseSourceCodeUsers.mockReturnValue({
+    searchUsersByTerm,
+    users,
+    errorMessage,
+    hasError,
+    isLoading
+  })
 }
 
 describe('UserSelect', () => {
@@ -36,6 +45,13 @@ describe('UserSelect', () => {
     render()
 
     expect(screen.getByPlaceholderText('Type a Source code name user...')).toBeInTheDocument()
+  })
+
+  it('does not render loading in select', () => {
+    mockUseSourceCodeUsers()
+    render()
+
+    expect(screen.getByText('Loading...')).not.toBeVisible()
   })
 
   describe('When type in select', () => {
@@ -69,6 +85,24 @@ describe('UserSelect', () => {
 
         expect(input).toBeCalledWith({ login: 'Liz' })
       })
+    })
+  })
+
+  describe('When has error', () => {
+    it('shows error message', () => {
+      mockUseSourceCodeUsers({ hasError: true, errorMessage: 'Error message' })
+      render()
+
+      expect(screen.getByText('Error message')).toBeInTheDocument()
+    })
+  })
+
+  describe('When is loading', () => {
+    it('renders loading in select', () => {
+      mockUseSourceCodeUsers({ isLoading: true })
+      render()
+
+      expect(screen.getByText('Loading...')).toBeVisible()
     })
   })
 })
