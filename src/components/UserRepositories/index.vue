@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button @click="loadUserRepositories">refresh</button>
     <template v-if="!hasError">
       <h2 data-testid="user-repositories-title">{{title}}</h2>
       <div
