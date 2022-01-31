@@ -28,7 +28,7 @@ describe('SourceCodeRepositories', () => {
       await sleep(10)
 
       if (!success) {
-        throw new Error()
+        throw new Error('Error message')
       }
 
       return repositories
@@ -61,6 +61,28 @@ describe('SourceCodeRepositories', () => {
         })
       })
     })
+
+    describe('.hasError', () => {
+      describe('When "errorMessage" is null or empty', () => {
+        it('returns false', () => {
+          const store = createStore()
+
+          store.state.sourceCodeRepositories.errorMessage = null
+
+          expect(store.getters['sourceCodeRepositories/hasError']).toBeFalsy()
+        })
+      })
+
+      describe('When "errorMessage" is not empty', () => {
+        it('returns true', () => {
+          const store = createStore()
+
+          store.state.sourceCodeRepositories.errorMessage = 'error'
+
+          expect(store.getters['sourceCodeRepositories/hasError']).toBeTruthy()
+        })
+      })
+    })
   })
 
   describe('Actions', () => {
@@ -76,7 +98,8 @@ describe('SourceCodeRepositories', () => {
 
         expect(store.state.sourceCodeRepositories).toEqual({
           repositories: [],
-          status: 'loading'
+          status: 'loading',
+          errorMessage: null
         })
       })
 
@@ -100,7 +123,8 @@ describe('SourceCodeRepositories', () => {
 
           expect(store.state.sourceCodeRepositories).toEqual({
             repositories: ['repo-1', 'repo-2', 'repo-3'],
-            status: 'success'
+            status: 'success',
+            errorMessage: null
           })
         })
       })
@@ -117,7 +141,8 @@ describe('SourceCodeRepositories', () => {
 
           expect(store.state.sourceCodeRepositories).toEqual({
             repositories: [],
-            status: 'error'
+            status: 'error',
+            errorMessage: 'Error message'
           })
         })
       })

@@ -39,6 +39,52 @@ describe('SourceCodeUsers', () => {
     searchUserMock.mockClear()
   })
 
+  describe('Getters', () => {
+    describe('.isLoading', () => {
+      describe('When "status" is "loading"', () => {
+        it('returns true', () => {
+          const store = createStore()
+
+          store.state.sourceCodeUsers.status = 'loading'
+
+          expect(store.getters['sourceCodeUsers/isLoading']).toBeTruthy()
+        })
+      })
+
+      describe('When "status" is not "loading"', () => {
+        it('returns false', () => {
+          const store = createStore()
+
+          store.state.sourceCodeUsers.status = 'error'
+
+          expect(store.getters['sourceCodeUsers/isLoading']).toBeFalsy()
+        })
+      })
+    })
+
+    describe('.hasError', () => {
+      describe('When "errorMessage" is null or empty', () => {
+        it('returns false', () => {
+          const store = createStore()
+
+          store.state.sourceCodeUsers.errorMessage = null
+
+          expect(store.getters['sourceCodeUsers/hasError']).toBeFalsy()
+        })
+      })
+
+      describe('When "errorMessage" is not empty', () => {
+        it('returns true', () => {
+          const store = createStore()
+
+          store.state.sourceCodeUsers.errorMessage = 'error'
+
+          expect(store.getters['sourceCodeUsers/hasError']).toBeTruthy()
+        })
+      })
+    })
+  })
+
   describe('Actions', () => {
     describe('.search', () => {
       beforeAll(() => {

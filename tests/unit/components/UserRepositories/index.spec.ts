@@ -9,11 +9,19 @@ jest.mock('@/components/UserRepository/index.vue')
 const mockUseSourceCodeRepositories = ({
   repositories = [] as any[],
   isLoading = false,
-  getUserRepositories = jest.fn()
+  getUserRepositories = jest.fn(),
+  hasError = false,
+  errorMessage = null as string | null
 } = {}) => {
   const useSourceCodeRepositoriesMocked = useSourceCodeRepositories as jest.Mock
 
-  useSourceCodeRepositoriesMocked.mockReturnValue({ repositories, isLoading, getUserRepositories })
+  useSourceCodeRepositoriesMocked.mockReturnValue({
+    repositories,
+    isLoading,
+    getUserRepositories,
+    hasError,
+    errorMessage
+  })
 }
 
 describe('UserRepositories', () => {
@@ -46,27 +54,76 @@ describe('UserRepositories', () => {
   })
 
   describe('When is loading', () => {
-    it('renders title with loading state', () => {
+    beforeEach(() => {
       mockUseSourceCodeRepositories({ isLoading: true })
+    })
+
+    it('renders title with loading state', () => {
       render()
 
       expect(screen.getByText('Loading user login repositories...')).toBeInTheDocument()
     })
+
+    it('does not render repositories', () => {
+      render()
+
+      expect(screen.queryByTestId('user-repositories-container')).not.toBeInTheDocument()
+    })
+
+    it('does not render error', () => {
+      render()
+
+      expect(screen.queryByTestId('user-repositories-error')).not.toBeInTheDocument()
+    })
   })
 
   describe('When is loaded', () => {
-    it('renders title with loaded state', () => {
-      mockUseSourceCodeRepositories({ isLoading: false, repositories: Array(10).fill({}) })
-      render()
+    describe('with success', () => {
+      beforeEach(() => {
+        mockUseSourceCodeRepositories({ isLoading: false, repositories: Array(10).fill({}) })
+      })
 
-      expect(screen.getByText('user login has 10 repositories')).toBeInTheDocument()
+      it('renders title with loaded state', () => {
+        render()
+
+        expect(screen.getByText('user login has 10 repositories')).toBeInTheDocument()
+      })
+
+      it('renders repositories', () => {
+        render()
+
+        expect(screen.queryAllByText('UserRepository')).toHaveLength(10)
+      })
+
+      it('does not render error', () => {
+        render()
+
+        expect(screen.queryByTestId('user-repositories-error')).not.toBeInTheDocument()
+      })
     })
 
-    it('renders repositories', () => {
-      mockUseSourceCodeRepositories({ isLoading: false, repositories: Array(10).fill({}) })
-      render()
+    describe('with error', () => {
+      beforeEach(() => {
+        mockUseSourceCodeRepositories({ hasError: true, errorMessage: 'Error message' })
+      })
 
-      expect(screen.queryAllByText('UserRepository')).toHaveLength(10)
+      it('does not render title', () => {
+        render()
+
+        expect(screen.queryByTestId('user-repositories-title')).not.toBeInTheDocument()
+      })
+
+      it('does not render repositories', () => {
+        render()
+
+        expect(screen.queryByTestId('user-repositories-container')).not.toBeInTheDocument()
+      })
+
+      it('renders error message', () => {
+        render()
+
+        expect(screen.getByText('Error message')).toBeInTheDocument()
+      })
     })
   })
 })

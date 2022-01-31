@@ -1,16 +1,9 @@
 import { Action, Module, Mutation, VuexModule } from '@/store/modules/vuex-module-decorators'
 
 import { SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
+import { getErrorMessage } from '@/selectors/error'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
-
-const getErrorMessage = (error: unknown): string => {
-  if (error instanceof Error) {
-    return error.message
-  }
-
-  return 'Unknown error'
-}
 
 @Module({
   namespaced: true

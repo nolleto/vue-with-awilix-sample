@@ -1,36 +1,59 @@
 <template>
   <div>
-    <h2>{{title}}</h2>
-    <div v-if="!isLoading" class="user-repositories__list-container">
-      <UserRepository
-        v-for="repository in repositories"
-        :key="repository.id"
-        :repository="repository"
-      />
-    </div>
+    <button @click="loadUserRepositories">refresh</button>
+    <template v-if="!hasError">
+      <h2 data-testid="user-repositories-title">{{title}}</h2>
+      <div
+        v-if="!isLoading"
+        class="user-repositories__list-container"
+        data-testid="user-repositories-container"
+      >
+        <UserRepository
+          v-for="repository in repositories"
+          :key="repository.id"
+          :repository="repository"
+        />
+      </div>
+    </template>
+
+    <ErrorMessage v-else data-testid="user-repositories-error">
+      {{errorMessage}}
+    </ErrorMessage>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { SourceCodeServiceRepository, SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
-import { useSourceCodeRepositories } from '@/store/modules/sourceCode/repositories'
+import { SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
+import { useSourceCodeRepositories, useSourceCodeRepositoriesReturn } from '@/store/modules/sourceCode/repositories'
 import UserRepository from '@/components/UserRepository/index.vue'
+import ErrorMessage from '@/components/ErrorMessage/index.vue'
 
 @Component({
-  components: { UserRepository },
+  components: {
+    UserRepository,
+    ErrorMessage
+  },
   setup() {
-    const { repositories, isLoading, getUserRepositories } = useSourceCodeRepositories()
+    const {
+      repositories,
+      isLoading,
+      getUserRepositories,
+      hasError,
+      errorMessage
+    } = useSourceCodeRepositories()
 
-    return { repositories, isLoading, getUserRepositories }
+    return { repositories, isLoading, getUserRepositories, hasError, errorMessage }
   }
 })
 export default class UserRepositories extends Vue {
   @Prop(Object) readonly user!: SourceCodeServiceUser
 
-  repositories!: SourceCodeServiceRepository[]
-  isLoading!: boolean
-  getUserRepositories!: (user: SourceCodeServiceUser) => Promise<void>
+  repositories!: useSourceCodeRepositoriesReturn['repositories']['value']
+  isLoading!: useSourceCodeRepositoriesReturn['isLoading']['value']
+  hasError!: useSourceCodeRepositoriesReturn['hasError']['value']
+  errorMessage!: useSourceCodeRepositoriesReturn['errorMessage']['value']
+  getUserRepositories!: useSourceCodeRepositoriesReturn['getUserRepositories']
 
   mounted(): void {
     this.loadUserRepositories()

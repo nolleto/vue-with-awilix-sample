@@ -19,7 +19,7 @@
         </div>
       </template>
     </v-select>
-    <p class="option-item__error" v-if="hasError">{{errorMessage}}</p>
+    <ErrorMessage v-if="hasError">{{errorMessage}}</ErrorMessage>
   </label>
 </template>
 
@@ -30,11 +30,15 @@ import debounce from 'debounce'
 import { SourceCodeServiceUser } from '@/services/sourceCode/SourceCodeService'
 import { useSourceCodeUsers, useSourceCodeUsersReturn } from '@/store/modules/sourceCode/users'
 import { useSourceCodeInfo } from '@/store/modules/sourceCode/info'
+import ErrorMessage from '@/components/ErrorMessage/index.vue'
 
 import 'vue-select/dist/vue-select.css'
 
 @Component({
-  components: { vSelect },
+  components: {
+    vSelect,
+    ErrorMessage
+  },
   setup () {
     const {
       searchUsersByTerm,
@@ -98,9 +102,5 @@ export default class UserSelect extends Vue {
 .option-item__image {
   width: 30px;
   height: 30px;
-}
-
-.option-item__error {
-  color: #E74C3C;
 }
 </style>
